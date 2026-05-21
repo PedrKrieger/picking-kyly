@@ -46,7 +46,10 @@ async function listarCaixas(req, res) {
          c.pedido,
          c.cliente,
          c.status,
-         count(ci.id)::int as quantidade_itens,
+         count(ci.id)::int as total_skus,
+         coalesce(sum(ci.quantidade_solicitada), 0)::int as total_pecas,
+         coalesce(sum(ci.quantidade_coletada), 0)::int as pecas_coletadas,
+         coalesce(sum(ci.quantidade_solicitada), 0)::int as quantidade_itens,
          coalesce(sum(ci.quantidade_solicitada), 0)::int as quantidade_solicitada,
          coalesce(sum(ci.quantidade_coletada), 0)::int as quantidade_coletada,
          case

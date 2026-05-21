@@ -12,15 +12,24 @@ function Coleta({ coletaId, caixa, onNovaCaixa }) {
   const [acaoLoading, setAcaoLoading] = useState('');
   const inputRef = useRef(null);
 
+  function obterItemDaResposta(data) {
+    if (data?.temItem === false) {
+      return null;
+    }
+
+    return data?.item || data?.proximoItem || null;
+  }
+
   async function carregarProximoItem() {
     try {
       setLoading(true);
       const response = await api.get(`/api/coletas/${coletaId}/proximo-item`);
-      setItemAtual(response.data.proximoItem);
+      const proximoItem = obterItemDaResposta(response.data);
+      setItemAtual(proximoItem);
 
-      if (!response.data.proximoItem) {
+      if (!proximoItem) {
         setTipoMensagem('alerta');
-        setMensagem(response.data.mensagem || 'Nao ha proximo item. A coleta pode ser finalizada.');
+        setMensagem(response.data.message || response.data.mensagem || 'Sem item pendente. Finalize a caixa.');
       }
     } catch (error) {
       setTipoMensagem('erro');
@@ -47,23 +56,31 @@ function Coleta({ coletaId, caixa, onNovaCaixa }) {
       return;
     }
 
+    if (!itemAtual) {
+      setTipoMensagem('erro');
+      setMensagem('Nao existe item atual para bipar.');
+      return;
+    }
+
     try {
       setAcaoLoading('bipar');
       const response = await api.post('/api/coletas/bipar-peca', {
         coletaId: Number(coletaId),
+        caixaItemId: Number(itemAtual.caixa_item_id || itemAtual.id),
         codigoPeca: codigoPeca.trim()
       });
 
-      setTipoMensagem(response.data.sucesso ? 'sucesso' : 'erro');
-      setMensagem(response.data.mensagem);
-      setItemAtual(response.data.proximoItem);
+      setTipoMensagem(response.data.success || response.data.sucesso ? 'sucesso' : 'erro');
+      setMensagem(response.data.message || response.data.mensagem);
+      setItemAtual(obterItemDaResposta(response.data));
       setCodigoPeca('');
     } catch (error) {
       const data = error.response?.data;
       setTipoMensagem('erro');
       setMensagem(data?.mensagem || data?.erro || 'Erro ao bipar peca.');
-      if (data?.proximoItem) {
-        setItemAtual(data.proximoItem);
+      const proximoItem = obterItemDaResposta(data);
+      if (proximoItem) {
+        setItemAtual(proximoItem);
       }
       setCodigoPeca('');
     } finally {
@@ -83,13 +100,13 @@ function Coleta({ coletaId, caixa, onNovaCaixa }) {
       setAcaoLoading('pular');
       const response = await api.post('/api/coletas/pular-item', {
         coletaId: Number(coletaId),
-        caixaItemId: itemAtual.id,
+        caixaItemId: itemAtual.caixa_item_id || itemAtual.id,
         motivo: 'Falta de peca no endereco'
       });
 
       setTipoMensagem('alerta');
       setMensagem(response.data.mensagem);
-      setItemAtual(response.data.proximoItem);
+      setItemAtual(obterItemDaResposta(response.data));
     } catch (error) {
       setTipoMensagem('erro');
       setMensagem(error.response?.data?.erro || 'Erro ao pular item.');
@@ -154,24 +171,31 @@ function Coleta({ coletaId, caixa, onNovaCaixa }) {
 
         {itemAtual ? (
           <div className="item-atual">
+            {itemAtual.status === 'PULADO' && (
+              <MensagemColetor
+                tipo="alerta"
+                texto="Este item foi pulado anteriormente e voltou para nova tentativa de coleta."
+              />
+            )}
+
             <div className="endereco-destaque">
               <span>Endereco</span>
-              <strong>{itemAtual.endereco?.codigo}</strong>
-              <small>{itemAtual.endereco?.descricao}</small>
+              <strong>{itemAtual.endereco_detalhe?.codigo || itemAtual.endereco?.codigo || itemAtual.endereco}</strong>
+              <small>{itemAtual.endereco_detalhe?.descricao || itemAtual.endereco?.descricao}</small>
             </div>
 
             <div className="produto-grid">
               <div>
                 <span>Referencia</span>
-                <strong>{itemAtual.produto?.referencia}</strong>
+                <strong>{itemAtual.referencia || itemAtual.produto?.referencia}</strong>
               </div>
               <div>
                 <span>Cor</span>
-                <strong>{itemAtual.produto?.cor}</strong>
+                <strong>{itemAtual.cor || itemAtual.produto?.cor}</strong>
               </div>
               <div>
                 <span>Tamanho</span>
-                <strong>{itemAtual.produto?.tamanho}</strong>
+                <strong>{itemAtual.tamanho || itemAtual.produto?.tamanho}</strong>
               </div>
               <div>
                 <span>Qtd.</span>

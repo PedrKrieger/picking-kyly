@@ -23,7 +23,7 @@ async function buscarPorPapeleta(req, res) {
     const caixa = caixaResult.rows[0];
 
     const itensResult = await db.query(
-      `select
+      `select distinct on (ci.id)
          ci.id,
          ci.caixa_id,
          ci.produto_id,
@@ -46,17 +46,35 @@ async function buscarPorPapeleta(req, res) {
        join produtos p on p.id = ci.produto_id
        join enderecos_picking e on e.id = ci.endereco_id
        where ci.caixa_id = $1
-       order by ci.ordem_coleta asc, ci.id asc`,
+       order by ci.id asc, ci.ordem_coleta asc`,
       [caixa.id]
     );
 
+    const itensOrdenados = itensResult.rows.sort((a, b) => {
+      const ordemA = Number(a.ordem_coleta || 0);
+      const ordemB = Number(b.ordem_coleta || 0);
+
+      if (ordemA !== ordemB) {
+        return ordemA - ordemB;
+      }
+
+      return Number(a.id) - Number(b.id);
+    });
+
     return res.json({
       caixa,
-      itens: itensResult.rows.map((item) => ({
+      itens: itensOrdenados.map((item) => ({
         id: item.id,
+        caixa_item_id: item.id,
         caixa_id: item.caixa_id,
         produto_id: item.produto_id,
         endereco_id: item.endereco_id,
+        referencia: item.referencia,
+        descricao: item.produto_descricao,
+        cor: item.cor,
+        tamanho: item.tamanho,
+        codigo_sku: item.codigo_sku,
+        endereco: item.endereco_codigo,
         quantidade_solicitada: item.quantidade_solicitada,
         quantidade_coletada: item.quantidade_coletada,
         status: item.status,

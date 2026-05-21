@@ -28,12 +28,19 @@ async function buscarProximoItem(req, res) {
 
     if (!proximoItem) {
       return res.json({
-        mensagem: 'Nao ha proximo item. A coleta pode ser finalizada.',
+        success: true,
+        temItem: false,
+        message: 'Sem item pendente. Finalize a caixa.',
+        mensagem: 'Sem item pendente. Finalize a caixa.',
+        item: null,
         proximoItem: null
       });
     }
 
     return res.json({
+      success: true,
+      temItem: true,
+      item: proximoItem,
       proximoItem
     });
   } catch (error) {
@@ -46,17 +53,19 @@ async function buscarProximoItem(req, res) {
 
 async function biparPeca(req, res) {
   try {
-    const { coletaId, codigoPeca } = req.body;
+    const { coletaId, caixaItemId, codigoPeca } = req.body;
 
-    if (!coletaId || !codigoPeca) {
+    if (!coletaId || !caixaItemId || !codigoPeca) {
       return res.status(400).json({
-        erro: 'coletaId e codigoPeca sao obrigatorios'
+        success: false,
+        message: 'coletaId, caixaItemId e codigoPeca sao obrigatorios',
+        erro: 'coletaId, caixaItemId e codigoPeca sao obrigatorios'
       });
     }
 
-    const resultado = await coletaService.biparPeca(coletaId, codigoPeca);
+    const resultado = await coletaService.biparPeca(coletaId, caixaItemId, codigoPeca);
 
-    if (!resultado.sucesso) {
+    if (!resultado.success && !resultado.sucesso) {
       return res.status(400).json(resultado);
     }
 
