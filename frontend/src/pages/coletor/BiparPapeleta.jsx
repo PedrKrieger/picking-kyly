@@ -18,7 +18,7 @@ function BiparPapeleta({ usuario, supervisor, onIniciarColeta, onSair }) {
     setCaixa(null);
 
     if (!codigoPapeleta.trim()) {
-      setErro('Informe o codigo da papeleta.');
+      setErro('Informe o código da papeleta.');
       return;
     }
 
@@ -29,7 +29,7 @@ function BiparPapeleta({ usuario, supervisor, onIniciarColeta, onSair }) {
       localStorage.setItem('pickingCaixa', JSON.stringify(response.data.caixa));
       setMensagem('Caixa localizada.');
     } catch (error) {
-      setErro(error.response?.data?.erro || 'Caixa nao encontrada.');
+      setErro(error.response?.data?.erro || 'Caixa não encontrada.');
     } finally {
       setLoading(false);
     }
@@ -53,7 +53,7 @@ function BiparPapeleta({ usuario, supervisor, onIniciarColeta, onSair }) {
       localStorage.setItem('pickingColetaId', String(response.data.coleta.id));
       onIniciarColeta(response.data.coleta.id, caixa);
     } catch (error) {
-      setErro(error.response?.data?.erro || 'Nao foi possivel iniciar a coleta.');
+      setErro(error.response?.data?.erro || 'Não foi possível iniciar a coleta.');
     } finally {
       setIniciando(false);
     }
@@ -79,7 +79,7 @@ function BiparPapeleta({ usuario, supervisor, onIniciarColeta, onSair }) {
 
         <form onSubmit={buscarCaixa} className="coletor-form">
           <label>
-            Codigo da papeleta
+            Código da papeleta
             <input
               autoFocus
               value={codigoPapeleta}

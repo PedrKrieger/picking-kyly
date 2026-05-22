@@ -14,7 +14,7 @@ function LoginColetor({ onLogin }) {
     setErro('');
 
     if (!codigoSupervisor.trim() || !codigoUsuario.trim()) {
-      setErro('Informe o codigo do supervisor e do usuario.');
+      setErro('Informe o código do supervisor e do usuário.');
       return;
     }
 
@@ -30,7 +30,7 @@ function LoginColetor({ onLogin }) {
 
       onLogin(response.data.usuario, response.data.supervisor);
     } catch (error) {
-      setErro(error.response?.data?.erro || 'Nao foi possivel entrar no coletor.');
+      setErro(error.response?.data?.erro || 'Não foi possível entrar no coletor.');
     } finally {
       setLoading(false);
     }
@@ -46,7 +46,7 @@ function LoginColetor({ onLogin }) {
 
         <form onSubmit={entrar} className="coletor-form">
           <label>
-            Codigo do supervisor
+            Código do supervisor
             <input
               autoFocus
               value={codigoSupervisor}
@@ -56,7 +56,7 @@ function LoginColetor({ onLogin }) {
           </label>
 
           <label>
-            Codigo do usuario
+            Código do usuário
             <input
               value={codigoUsuario}
               onChange={(event) => setCodigoUsuario(event.target.value)}
@@ -71,7 +71,7 @@ function LoginColetor({ onLogin }) {
           </button>
         </form>
 
-        {loading && <Loading texto="Validando codigos..." />}
+        {loading && <Loading texto="Validando códigos..." />}
       </section>
     </main>
   );

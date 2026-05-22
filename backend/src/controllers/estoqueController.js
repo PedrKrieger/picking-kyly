@@ -2,14 +2,14 @@ const db = require('../config/database');
 
 function mensagemStatusPeca(status) {
   if (status === 'DISPONIVEL') {
-    return 'Peca disponivel em estoque.';
+    return 'Peça disponível em estoque.';
   }
 
   if (status === 'COLETADA') {
-    return 'Peca ja coletada e nao esta mais disponivel no estoque.';
+    return 'Peça já coletada e não está mais disponível no estoque.';
   }
 
-  return `Peca com status ${status}.`;
+  return `Peça com status ${status}.`;
 }
 
 async function listarEstoque(req, res) {
@@ -124,7 +124,7 @@ async function listarPecasProduto(req, res) {
     console.error('Erro ao listar pecas do produto:', error);
     return res.status(500).json({
       success: false,
-      message: 'Erro ao listar pecas do produto'
+      message: 'Erro ao listar peças do produto'
     });
   }
 }
@@ -182,7 +182,7 @@ async function buscarPecaPorCodigo(req, res) {
     if (result.rowCount === 0) {
       return res.status(404).json({
         success: false,
-        message: 'Peca nao encontrada'
+        message: 'Peça não encontrada'
       });
     }
 
@@ -232,7 +232,7 @@ async function buscarPecaPorCodigo(req, res) {
     console.error('Erro ao buscar peca por codigo:', error);
     return res.status(500).json({
       success: false,
-      message: 'Erro ao buscar peca'
+      message: 'Erro ao buscar peça'
     });
   }
 }

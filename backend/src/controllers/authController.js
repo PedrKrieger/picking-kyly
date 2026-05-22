@@ -6,7 +6,7 @@ async function loginColetor(req, res) {
 
     if (!codigoSupervisor || !codigoUsuario) {
       return res.status(400).json({
-        erro: 'Codigo do supervisor e codigo do usuario sao obrigatorios'
+        erro: 'Código do supervisor e código do usuário são obrigatórios'
       });
     }
 
@@ -20,7 +20,7 @@ async function loginColetor(req, res) {
 
     if (supervisorResult.rowCount === 0) {
       return res.status(404).json({
-        erro: 'Supervisor nao encontrado ou inativo'
+        erro: 'Supervisor não encontrado ou inativo'
       });
     }
 
@@ -34,7 +34,7 @@ async function loginColetor(req, res) {
 
     if (usuarioResult.rowCount === 0) {
       return res.status(404).json({
-        erro: 'Usuario nao encontrado ou inativo'
+        erro: 'Usuário não encontrado ou inativo'
       });
     }
 

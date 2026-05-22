@@ -25,7 +25,7 @@ function Ocorrencias() {
         const response = await api.get('/api/admin/ocorrencias');
         setOcorrencias(response.data.ocorrencias || []);
       } catch (error) {
-        setErro(error.response?.data?.erro || 'Erro ao listar ocorrencias.');
+        setErro(error.response?.data?.erro || 'Erro ao listar ocorrências.');
       } finally {
         setLoading(false);
       }
@@ -35,8 +35,8 @@ function Ocorrencias() {
   }, []);
 
   return (
-    <LayoutAdmin titulo="Ocorrencias">
-      {loading && <Loading texto="Carregando ocorrencias..." />}
+    <LayoutAdmin titulo="Ocorrências">
+      {loading && <Loading texto="Carregando ocorrências..." />}
       {erro && <div className="admin-alert">{erro}</div>}
 
       {!loading && !erro && (
@@ -46,9 +46,9 @@ function Ocorrencias() {
               <tr>
                 <th>Caixa</th>
                 <th>Produto</th>
-                <th>Usuario</th>
+                <th>Usuário</th>
                 <th>Tipo</th>
-                <th>Descricao</th>
+                <th>Descrição</th>
                 <th>Data</th>
               </tr>
             </thead>
@@ -73,7 +73,7 @@ function Ocorrencias() {
               {ocorrencias.length === 0 && (
                 <tr>
                   <td colSpan="6" className="empty-row">
-                    Nenhuma ocorrencia encontrada.
+                    Nenhuma ocorrência encontrada.
                   </td>
                 </tr>
               )}

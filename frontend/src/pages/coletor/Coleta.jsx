@@ -33,7 +33,7 @@ function Coleta({ coletaId, caixa, onNovaCaixa }) {
       }
     } catch (error) {
       setTipoMensagem('erro');
-      setMensagem(error.response?.data?.erro || 'Erro ao carregar proximo item.');
+      setMensagem(error.response?.data?.erro || 'Erro ao carregar próximo item.');
     } finally {
       setLoading(false);
     }
@@ -52,13 +52,13 @@ function Coleta({ coletaId, caixa, onNovaCaixa }) {
 
     if (!codigoPeca.trim()) {
       setTipoMensagem('erro');
-      setMensagem('Informe o codigo da peca.');
+      setMensagem('Informe o código da peça.');
       return;
     }
 
     if (!itemAtual) {
       setTipoMensagem('erro');
-      setMensagem('Nao existe item atual para bipar.');
+      setMensagem('Não existe item atual para bipar.');
       return;
     }
 
@@ -77,7 +77,7 @@ function Coleta({ coletaId, caixa, onNovaCaixa }) {
     } catch (error) {
       const data = error.response?.data;
       setTipoMensagem('erro');
-      setMensagem(data?.mensagem || data?.erro || 'Erro ao bipar peca.');
+      setMensagem(data?.mensagem || data?.erro || 'Erro ao bipar peça.');
       const proximoItem = obterItemDaResposta(data);
       if (proximoItem) {
         setItemAtual(proximoItem);
@@ -92,7 +92,7 @@ function Coleta({ coletaId, caixa, onNovaCaixa }) {
   async function pularItem() {
     if (!itemAtual) {
       setTipoMensagem('erro');
-      setMensagem('Nao existe item atual para pular.');
+      setMensagem('Não existe item atual para pular.');
       return;
     }
 
@@ -101,7 +101,7 @@ function Coleta({ coletaId, caixa, onNovaCaixa }) {
       const response = await api.post('/api/coletas/pular-item', {
         coletaId: Number(coletaId),
         caixaItemId: itemAtual.caixa_item_id || itemAtual.id,
-        motivo: 'Falta de peca no endereco'
+        motivo: 'Falta de peça no endereço'
       });
 
       setTipoMensagem('alerta');
@@ -167,7 +167,7 @@ function Coleta({ coletaId, caixa, onNovaCaixa }) {
 
         <MensagemColetor tipo={tipoMensagem} texto={mensagem} />
 
-        {loading && <Loading texto="Carregando proximo item..." />}
+        {loading && <Loading texto="Carregando próximo item..." />}
 
         {itemAtual ? (
           <div className="item-atual">
@@ -179,14 +179,14 @@ function Coleta({ coletaId, caixa, onNovaCaixa }) {
             )}
 
             <div className="endereco-destaque">
-              <span>Endereco</span>
+              <span>Endereço</span>
               <strong>{itemAtual.endereco_detalhe?.codigo || itemAtual.endereco?.codigo || itemAtual.endereco}</strong>
               <small>{itemAtual.endereco_detalhe?.descricao || itemAtual.endereco?.descricao}</small>
             </div>
 
             <div className="produto-grid">
               <div>
-                <span>Referencia</span>
+                <span>Referência</span>
                 <strong>{itemAtual.referencia || itemAtual.produto?.referencia}</strong>
               </div>
               <div>
@@ -205,7 +205,7 @@ function Coleta({ coletaId, caixa, onNovaCaixa }) {
 
             <form onSubmit={biparPeca} className="coletor-form">
               <label>
-                Codigo da peca
+                Código da peça
                 <input
                   ref={inputRef}
                   value={codigoPeca}
@@ -215,7 +215,7 @@ function Coleta({ coletaId, caixa, onNovaCaixa }) {
               </label>
 
               <button type="submit" className="btn-coletor btn-success" disabled={acaoLoading === 'bipar'}>
-                {acaoLoading === 'bipar' ? 'Validando...' : 'Bipar peca'}
+                {acaoLoading === 'bipar' ? 'Validando...' : 'Bipar peça'}
               </button>
             </form>
           </div>

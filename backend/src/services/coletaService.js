@@ -60,7 +60,7 @@ async function buscarColeta(client, coletaId, usarLock = false) {
   );
 
   if (result.rowCount === 0) {
-    throw criarErro('Coleta nao encontrada', 404);
+    throw criarErro('Coleta não encontrada', 404);
   }
 
   return result.rows[0];
@@ -141,7 +141,7 @@ async function iniciarColeta(caixaId, usuarioId, supervisorId) {
     );
 
     if (caixaResult.rowCount === 0) {
-      throw criarErro('Caixa nao encontrada', 404);
+      throw criarErro('Caixa não encontrada', 404);
     }
 
     const caixa = caixaResult.rows[0];
@@ -169,7 +169,7 @@ async function iniciarColeta(caixaId, usuarioId, supervisorId) {
 
       await client.query('commit');
       return {
-        mensagem: 'Coleta aberta ja existente',
+        mensagem: 'Coleta aberta já existente',
         existente: true,
         coleta: existenteResult.rows[0]
       };
@@ -243,7 +243,7 @@ async function biparPeca(coletaId, caixaItemId, codigoPeca) {
     const coleta = await buscarColeta(client, coletaIdNumerico, true);
 
     if (coleta.status !== 'ABERTA') {
-      throw criarErro('Esta coleta nao esta aberta');
+      throw criarErro('Esta coleta não está aberta');
     }
 
     const caixaItemResult = await client.query(
@@ -275,13 +275,13 @@ async function biparPeca(coletaId, caixaItemId, codigoPeca) {
     );
 
     if (caixaItemResult.rowCount === 0) {
-      throw criarErro('Item da caixa nao encontrado', 404);
+      throw criarErro('Item da caixa não encontrado', 404);
     }
 
     const caixaItem = montarItem(caixaItemResult.rows[0]);
 
     if (Number(caixaItem.caixa_id) !== Number(coleta.caixa_id)) {
-      throw criarErro('Item nao pertence a caixa desta coleta');
+      throw criarErro('Item não pertence à caixa desta coleta');
     }
 
     if (Number(caixaItem.quantidade_coletada || 0) >= Number(caixaItem.quantidade_solicitada || 0)) {
@@ -291,7 +291,7 @@ async function biparPeca(coletaId, caixaItemId, codigoPeca) {
         pecaId: null,
         codigoLido: codigoPeca,
         resultado: 'QUANTIDADE_EXCEDIDA',
-        mensagem: 'Item ja coletado'
+        mensagem: 'Item já coletado'
       });
 
       await client.query('commit');
@@ -300,8 +300,8 @@ async function biparPeca(coletaId, caixaItemId, codigoPeca) {
         success: false,
         sucesso: false,
         resultado: 'QUANTIDADE_EXCEDIDA',
-        message: 'Item ja coletado',
-        mensagem: 'Item ja coletado',
+        message: 'Item já coletado',
+        mensagem: 'Item já coletado',
         registro
       };
     }
@@ -323,7 +323,7 @@ async function biparPeca(coletaId, caixaItemId, codigoPeca) {
         pecaId: null,
         codigoLido: codigoPeca,
         resultado: 'SKU_INVALIDO',
-        mensagem: 'Peca nao cadastrada'
+        mensagem: 'Peça não cadastrada'
       });
 
       await client.query('commit');
@@ -332,8 +332,8 @@ async function biparPeca(coletaId, caixaItemId, codigoPeca) {
         success: false,
         sucesso: false,
         resultado: 'SKU_INVALIDO',
-        message: 'Peca nao cadastrada',
-        mensagem: 'Peca nao cadastrada',
+        message: 'Peça não cadastrada',
+        mensagem: 'Peça não cadastrada',
         registro
       };
     }
@@ -347,7 +347,7 @@ async function biparPeca(coletaId, caixaItemId, codigoPeca) {
         pecaId: peca.id,
         codigoLido: codigoPeca,
         resultado: 'PECA_SEM_SALDO',
-        mensagem: 'Peca sem saldo'
+        mensagem: 'Peça sem saldo'
       });
 
       await client.query('commit');
@@ -356,8 +356,8 @@ async function biparPeca(coletaId, caixaItemId, codigoPeca) {
         success: false,
         sucesso: false,
         resultado: 'PECA_SEM_SALDO',
-        message: 'Peca sem saldo',
-        mensagem: 'Peca sem saldo',
+        message: 'Peça sem saldo',
+        mensagem: 'Peça sem saldo',
         registro
       };
     }
@@ -369,7 +369,7 @@ async function biparPeca(coletaId, caixaItemId, codigoPeca) {
         pecaId: peca.id,
         codigoLido: codigoPeca,
         resultado: 'SKU_INVALIDO',
-        mensagem: 'SKU nao pertence a caixa'
+        mensagem: 'SKU não pertence à caixa'
       });
 
       await client.query('commit');
@@ -378,8 +378,8 @@ async function biparPeca(coletaId, caixaItemId, codigoPeca) {
         success: false,
         sucesso: false,
         resultado: 'SKU_INVALIDO',
-        message: 'SKU nao pertence a caixa',
-        mensagem: 'SKU nao pertence a caixa',
+        message: 'SKU não pertence à caixa',
+        mensagem: 'SKU não pertence à caixa',
         registro
       };
     }
@@ -411,15 +411,15 @@ async function biparPeca(coletaId, caixaItemId, codigoPeca) {
       pecaId: peca.id,
       codigoLido: codigoPeca,
       resultado: 'SUCESSO',
-      mensagem: 'Peca coletada com sucesso'
+      mensagem: 'Peça coletada com sucesso'
     });
 
     const itemAtualizado = itemAtualizadoResult.rows[0];
     const itemFinalizado = itemAtualizado.status === 'COLETADO';
     const proximoItemDepois = await buscarProximoItemDaCaixa(client, coleta.caixa_id);
     const mensagemSucesso = proximoItemDepois
-      ? 'Peca coletada com sucesso'
-      : 'Peca coletada com sucesso. Sem item pendente. Finalize a caixa.';
+      ? 'Peça coletada com sucesso'
+      : 'Peça coletada com sucesso. Sem item pendente. Finalize a caixa.';
 
     await client.query('commit');
 
@@ -454,7 +454,7 @@ async function pularItem(coletaId, caixaItemId, motivo) {
     const coleta = await buscarColeta(client, coletaId, true);
 
     if (coleta.status !== 'ABERTA') {
-      throw criarErro('Esta coleta nao esta aberta');
+      throw criarErro('Esta coleta não está aberta');
     }
 
     const itemResult = await client.query(
@@ -466,7 +466,7 @@ async function pularItem(coletaId, caixaItemId, motivo) {
     );
 
     if (itemResult.rowCount === 0) {
-      throw criarErro('Item da caixa nao encontrado nesta coleta', 404);
+      throw criarErro('Item da caixa não encontrado nesta coleta', 404);
     }
 
     const item = itemResult.rows[0];

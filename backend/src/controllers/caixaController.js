@@ -16,7 +16,7 @@ async function buscarPorPapeleta(req, res) {
 
     if (caixaResult.rowCount === 0) {
       return res.status(404).json({
-        erro: 'Caixa nao encontrada'
+        erro: 'Caixa não encontrada'
       });
     }
 

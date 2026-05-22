@@ -6,7 +6,7 @@ async function iniciar(req, res) {
 
     if (!caixaId || !usuarioId || !supervisorId) {
       return res.status(400).json({
-        erro: 'caixaId, usuarioId e supervisorId sao obrigatorios'
+        erro: 'caixaId, usuarioId e supervisorId são obrigatórios'
       });
     }
 
@@ -46,7 +46,7 @@ async function buscarProximoItem(req, res) {
   } catch (error) {
     console.error('Erro ao buscar proximo item:', error);
     return res.status(error.statusCode || 500).json({
-      erro: error.message || 'Erro ao buscar proximo item'
+      erro: error.message || 'Erro ao buscar próximo item'
     });
   }
 }
@@ -58,8 +58,8 @@ async function biparPeca(req, res) {
     if (!coletaId || !caixaItemId || !codigoPeca) {
       return res.status(400).json({
         success: false,
-        message: 'coletaId, caixaItemId e codigoPeca sao obrigatorios',
-        erro: 'coletaId, caixaItemId e codigoPeca sao obrigatorios'
+        message: 'coletaId, caixaItemId e codigoPeca são obrigatórios',
+        erro: 'coletaId, caixaItemId e codigoPeca são obrigatórios'
       });
     }
 
@@ -73,7 +73,7 @@ async function biparPeca(req, res) {
   } catch (error) {
     console.error('Erro ao bipar peca:', error);
     return res.status(error.statusCode || 500).json({
-      erro: error.message || 'Erro ao bipar peca'
+      erro: error.message || 'Erro ao bipar peça'
     });
   }
 }
@@ -84,7 +84,7 @@ async function pularItem(req, res) {
 
     if (!coletaId || !caixaItemId || !motivo) {
       return res.status(400).json({
-        erro: 'coletaId, caixaItemId e motivo sao obrigatorios'
+        erro: 'coletaId, caixaItemId e motivo são obrigatórios'
       });
     }
 
@@ -104,7 +104,7 @@ async function finalizar(req, res) {
 
     if (!coletaId) {
       return res.status(400).json({
-        erro: 'coletaId e obrigatorio'
+        erro: 'coletaId é obrigatório'
       });
     }
 
@@ -124,7 +124,7 @@ async function salvarParcial(req, res) {
 
     if (!coletaId) {
       return res.status(400).json({
-        erro: 'coletaId e obrigatorio'
+        erro: 'coletaId é obrigatório'
       });
     }
 

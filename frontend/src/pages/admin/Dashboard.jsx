@@ -82,7 +82,7 @@ function Dashboard() {
             <CardDashboard
               titulo="Aguardando"
               valor={dados.total_caixas_aguardando}
-              legenda="Ainda nao iniciadas"
+              legenda="Ainda não iniciadas"
               icone="◷"
               variante="aguardando"
             />
@@ -96,26 +96,26 @@ function Dashboard() {
             <CardDashboard
               titulo="Finalizadas"
               valor={dados.total_caixas_finalizadas}
-              legenda="Concluidas"
+              legenda="Concluídas"
               icone="✓"
               variante="finalizada"
             />
             <CardDashboard
               titulo="Parciais"
               valor={dados.total_caixas_parciais}
-              legenda="Com divergencia ou falta"
+              legenda="Com divergência ou falta"
               icone="!"
               variante="parcial"
             />
             <CardDashboard
-              titulo="Pecas coletadas"
+              titulo="Peças coletadas"
               valor={dados.total_pecas_coletadas}
-              legenda="Pecas bipadas com sucesso"
+              legenda="Peças bipadas com sucesso"
               icone="◆"
               variante="pecas"
             />
             <CardDashboard
-              titulo="Ocorrencias"
+              titulo="Ocorrências"
               valor={dados.total_ocorrencias}
               legenda="Registros operacionais"
               icone="!"
@@ -156,13 +156,13 @@ function Dashboard() {
 
           <section className="quick-actions">
             <div>
-              <h3>Acoes rapidas</h3>
+              <h3>Ações rápidas</h3>
               <p>Acesse as principais consultas administrativas.</p>
             </div>
             <div className="quick-actions-buttons">
               <Link className="admin-button" to="/admin/caixas">Ver caixas</Link>
               <Link className="admin-button" to="/admin/estoque">Ver estoque</Link>
-              <Link className="admin-button" to="/admin/ocorrencias">Ver ocorrencias</Link>
+              <Link className="admin-button" to="/admin/ocorrencias">Ver ocorrências</Link>
             </div>
           </section>
         </>

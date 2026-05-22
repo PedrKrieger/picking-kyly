@@ -111,7 +111,7 @@ async function listarOcorrencias(req, res) {
   } catch (error) {
     console.error('Erro ao listar ocorrencias:', error);
     return res.status(500).json({
-      erro: 'Erro ao listar ocorrencias'
+      erro: 'Erro ao listar ocorrências'
     });
   }
 }

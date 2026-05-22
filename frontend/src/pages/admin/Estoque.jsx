@@ -21,14 +21,14 @@ function statusClasse(status) {
 
 function textoStatusConsulta(status) {
   if (status === 'DISPONIVEL') {
-    return 'Disponivel em estoque';
+    return 'Disponível em estoque';
   }
 
   if (status === 'COLETADA') {
-    return 'Peca ja coletada';
+    return 'Peça já coletada';
   }
 
-  return status || 'Status nao informado';
+  return status || 'Status não informado';
 }
 
 function Estoque() {
@@ -118,7 +118,7 @@ function Estoque() {
       const response = await api.get(`/api/admin/estoque/produto/${produto.produto_id}/pecas`);
       setPecasProduto(response.data.data || []);
     } catch (error) {
-      setErroPecas(error.response?.data?.message || 'Erro ao carregar pecas do produto.');
+      setErroPecas(error.response?.data?.message || 'Erro ao carregar peças do produto.');
     } finally {
       setLoadingPecas(false);
     }
@@ -130,7 +130,7 @@ function Estoque() {
     setPecaConsultada(null);
 
     if (!codigoPeca.trim()) {
-      setErroPeca('Informe o codigo da peca.');
+      setErroPeca('Informe o código da peça.');
       return;
     }
 
@@ -139,7 +139,7 @@ function Estoque() {
       const response = await api.get(`/api/admin/estoque/peca/${encodeURIComponent(codigoPeca.trim())}`);
       setPecaConsultada(response.data.data);
     } catch (error) {
-      setErroPeca(error.response?.data?.message || 'Peca nao encontrada.');
+      setErroPeca(error.response?.data?.message || 'Peça não encontrada.');
     } finally {
       setLoadingPeca(false);
     }
@@ -153,7 +153,7 @@ function Estoque() {
           <input
             value={busca}
             onChange={(event) => setBusca(event.target.value)}
-            placeholder="Pesquisar por referencia, descricao, SKU, cor, tamanho ou codigo da peca"
+            placeholder="Pesquisar por referência, descrição, SKU, cor, tamanho ou código da peça"
           />
         </label>
 
@@ -165,7 +165,7 @@ function Estoque() {
 
       <form className="consulta-peca" onSubmit={consultarPeca}>
         <label>
-          Consultar peca pelo codigo
+          Consultar peça pelo código
           <input
             value={codigoPeca}
             onChange={(event) => setCodigoPeca(event.target.value)}
@@ -182,9 +182,9 @@ function Estoque() {
       {pecaConsultada && (
         <section className="peca-card">
           <div>
-            <span>Codigo da peca</span>
+            <span>Código da peça</span>
             <strong>{pecaConsultada.codigo_barras_unico}</strong>
-            <small>{pecaConsultada.codigo_barras_secundario || 'Sem codigo secundario'}</small>
+            <small>{pecaConsultada.codigo_barras_secundario || 'Sem código secundário'}</small>
           </div>
           <div>
             <span>Status</span>
@@ -208,7 +208,7 @@ function Estoque() {
                 Caixa {pecaConsultada.coleta.caixa?.codigo_papeleta || pecaConsultada.coleta.caixa?.id}
               </strong>
               <small>
-                Pedido {pecaConsultada.coleta.caixa?.pedido || '-'} | Usuario {pecaConsultada.coleta.usuario?.nome || '-'} | {formatarData(pecaConsultada.coleta.data_bipagem)}
+                Pedido {pecaConsultada.coleta.caixa?.pedido || '-'} | Usuário {pecaConsultada.coleta.usuario?.nome || '-'} | {formatarData(pecaConsultada.coleta.data_bipagem)}
               </small>
             </div>
           )}
@@ -217,10 +217,10 @@ function Estoque() {
 
       <section className="dashboard-grid estoque-resumo">
         <CardDashboard titulo="Produtos com estoque" valor={resumo.totalProdutos} />
-        <CardDashboard titulo="Pecas disponiveis" valor={resumo.disponiveis} />
+        <CardDashboard titulo="Peças disponíveis" valor={resumo.disponiveis} />
         <CardDashboard titulo="Solicitadas em caixas" valor={resumo.solicitadas} />
         <CardDashboard titulo="Coletadas em caixas" valor={resumo.coletadasCaixas} />
-        <CardDashboard titulo="Saldo disponivel" valor={resumo.saldo} />
+        <CardDashboard titulo="Saldo disponível" valor={resumo.saldo} />
       </section>
 
       {loading && <Loading texto="Carregando estoque..." />}
@@ -231,16 +231,16 @@ function Estoque() {
           <table>
             <thead>
               <tr>
-                <th>Referencia</th>
-                <th>Descricao</th>
+                <th>Referência</th>
+                <th>Descrição</th>
                 <th>Cor</th>
                 <th>Tamanho</th>
-                <th>Codigo SKU</th>
-                <th>Pecas disponiveis</th>
+                <th>Código SKU</th>
+                <th>Peças disponíveis</th>
                 <th>Solicitadas</th>
                 <th>Coletadas caixas</th>
                 <th>Saldo</th>
-                <th>Acoes</th>
+                <th>Ações</th>
               </tr>
             </thead>
             <tbody>
@@ -257,7 +257,7 @@ function Estoque() {
                   <td>{produto.saldo_disponivel_estimado}</td>
                   <td>
                     <button type="button" className="table-action" onClick={() => verPecas(produto)}>
-                      {produtoAberto?.produto_id === produto.produto_id ? 'Fechar' : 'Ver pecas'}
+                      {produtoAberto?.produto_id === produto.produto_id ? 'Fechar' : 'Ver peças'}
                     </button>
                   </td>
                 </tr>
@@ -266,7 +266,7 @@ function Estoque() {
               {produtos.length === 0 && (
                 <tr>
                   <td colSpan="10" className="empty-row">
-                    Nenhum produto com estoque disponivel encontrado.
+                    Nenhum produto com estoque disponível encontrado.
                   </td>
                 </tr>
               )}
@@ -279,7 +279,7 @@ function Estoque() {
         <section className="pecas-produto">
           <div className="pecas-produto-header">
             <div>
-              <span>Pecas disponiveis do produto</span>
+              <span>Peças disponíveis do produto</span>
               <h2>{produtoAberto.referencia} - {produtoAberto.cor} - {produtoAberto.tamanho}</h2>
             </div>
             <button type="button" className="btn-outline" onClick={() => setProdutoAberto(null)}>
@@ -287,7 +287,7 @@ function Estoque() {
             </button>
           </div>
 
-          {loadingPecas && <Loading texto="Carregando pecas..." />}
+          {loadingPecas && <Loading texto="Carregando peças..." />}
           {erroPecas && <div className="admin-alert">{erroPecas}</div>}
 
           {!loadingPecas && !erroPecas && (
@@ -295,11 +295,11 @@ function Estoque() {
               <table>
                 <thead>
                   <tr>
-                    <th>Codigo unico</th>
-                    <th>Codigo secundario</th>
+                    <th>Código único</th>
+                    <th>Código secundário</th>
                     <th>Status</th>
-                    <th>Criacao</th>
-                    <th>Atualizacao</th>
+                    <th>Criação</th>
+                    <th>Atualização</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -307,7 +307,7 @@ function Estoque() {
                     <tr key={peca.id}>
                       <td>{peca.codigo_barras_unico}</td>
                       <td>{peca.codigo_barras_secundario || '-'}</td>
-                      <td><span className={statusClasse(peca.status)}>Disponivel</span></td>
+                      <td><span className={statusClasse(peca.status)}>Disponível</span></td>
                       <td>{formatarData(peca.data_criacao)}</td>
                       <td>{formatarData(peca.data_atualizacao)}</td>
                     </tr>
@@ -316,7 +316,7 @@ function Estoque() {
                   {pecasProduto.length === 0 && (
                     <tr>
                       <td colSpan="5" className="empty-row">
-                        Nenhuma peca disponivel para este produto.
+                        Nenhuma peça disponível para este produto.
                       </td>
                     </tr>
                   )}

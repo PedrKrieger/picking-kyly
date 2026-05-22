@@ -19,7 +19,7 @@ function LayoutAdmin({ titulo, children, ocultarCabecalho = false }) {
             Estoque
           </NavLink>
           <NavLink to="/admin/ocorrencias">
-            Ocorrencias
+            Ocorrências
           </NavLink>
         </nav>
       </aside>

@@ -14,7 +14,7 @@ app.use(express.json());
 
 app.get('/', (req, res) => {
   res.json({
-    mensagem: 'API do sistema de picking por coletor de codigo de barras'
+    mensagem: 'API do sistema de picking por coletor de código de barras'
   });
 });
 
@@ -26,7 +26,7 @@ app.use('/api/admin', adminRoutes);
 
 app.use((req, res) => {
   res.status(404).json({
-    erro: 'Rota nao encontrada'
+    erro: 'Rota não encontrada'
   });
 });
 
